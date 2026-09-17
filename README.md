@@ -4,7 +4,7 @@ A [Claude Code plugin](https://code.claude.com/docs/en/plugins) providing a TDD-
 
 ## What's inside
 
-**11 agents** (`agents/`):
+**12 agents** (`agents/`):
 
 | Agent | Role |
 |---|---|
@@ -18,6 +18,7 @@ A [Claude Code plugin](https://code.claude.com/docs/en/plugins) providing a TDD-
 | `design-analyzer` | Design requirements + reusable-component mapping |
 | `design-system-guardian` | Design-token compliance, no hardcoded values, accessibility |
 | `night-planner` | Turns end-of-day tickets into self-contained night orders; asks everything BEFORE the developer leaves |
+| `release-notes-writer` | Appends a user-facing entry to `RELEASENOTES.md` for each finished feature or fix; never reviews, never blocks |
 | `night-auditor` | Independently verifies the night's claims: re-runs tests, revert-checks, audits git vs. policy; flags, never fixes |
 
 **7 skills** (`skills/`):

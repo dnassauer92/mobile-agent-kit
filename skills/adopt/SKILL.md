@@ -48,7 +48,7 @@ Everything you write must be verifiable from the codebase. Mark anything uncerta
 Create empty directories (no files — memory grows organically). Plugin agents resolve their `memory: project` directory under a plugin-prefixed name:
 
 ```
-.claude/agent-memory/{mobile-kit-test-mobile-planner,mobile-kit-test-mobile-developer,mobile-kit-test-bug-fixer,mobile-kit-test-test-writer,mobile-kit-test-qa-reviewer,mobile-kit-test-tech-lead,mobile-kit-test-code-optimizer,mobile-kit-test-design-analyzer,mobile-kit-test-design-system-guardian}/
+.claude/agent-memory/{mobile-kit-test-mobile-planner,mobile-kit-test-mobile-developer,mobile-kit-test-bug-fixer,mobile-kit-test-writer,mobile-kit-test-qa-reviewer,mobile-kit-test-tech-lead,mobile-kit-test-code-optimizer,mobile-kit-test-design-analyzer,mobile-kit-test-design-system-guardian,mobile-kit-test-release-notes-writer}/
 ```
 
 If the directories already exist, leave them completely untouched.

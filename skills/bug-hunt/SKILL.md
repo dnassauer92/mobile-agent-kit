@@ -166,7 +166,17 @@ Prompt: "Read `<path>`. Review UI changes for design system compliance AND visua
 Before accepting a PASS, check that verification line — a source-only audit cannot catch an element that
 is invisible against its actual background or a layout that contradicts the mock.
 
-### Step 8: Final Report
+### Step 8: Release Notes
+
+Spawn the release-notes writer:
+```
+Agent(subagent_type: "release-notes-writer")
+```
+Prompt: "Read the context file at `<path>` for what was actually built, and `git diff` for the real change. Append one user-facing entry to the project's `RELEASENOTES.md` under `## Unreleased`, matching the file's existing format if it has one. Write for someone using the app, not for the team — no class names, no layer names. If the change has no user-visible effect, leave the file untouched. When done, append your results under a `## Release Notes` heading in the context file."
+
+This step never blocks. If the agent reports `'No user-facing change to record.'`, that is a normal outcome — record it and continue.
+
+### Step 9: Final Report
 
 Read the context file one final time. Present to user:
 
@@ -184,6 +194,7 @@ Read the context file one final time. Present to user:
 | 1 | bug-fixer diagnosis (bug-fixer) | <id> | completed | <one line> |
 | 2 | test-writer repro (test-writer) | <id> | completed | <one line — N tests written, repro=RED, control=GREEN> |
 | 3 | bug-fixer fix (bug-fixer) | <id> | completed | <one line — repro flipped to GREEN> |
+| N | release-notes (release-notes-writer) | <id> | completed | <one line — entry written, or no user-facing change> |
 | 4 | test-writer re-eval (test-writer) | <id> | completed/skipped | <only if push-back triggered> |
 | 5 | tech-lead (tech-lead) | <id> | completed | <one line> |
 | 6 | qa-reviewer (qa-reviewer) | <id> | completed | <one line> |
@@ -242,9 +253,19 @@ If UI files with visible changes were touched, spawn the design guardian (Step 7
 
 If blocking issues were found: spawn the bug fixer once to fix them (re-running only the affected tests), then re-spawn the combined reviewer once to verify. If blocking issues remain after this single round, STOP and report them to the user — the user decides whether to keep fixing in fast mode or upgrade to the full workflow. Same-pattern sites flagged by the review are ALWAYS deferred to the user (scope creep guard), never fixed in the fast track.
 
-### Step FB6: Final Report
+### Step FB6: Release Notes
 
-Same report format and rules as Step 8, with these differences:
+Spawn the release-notes writer:
+```
+Agent(subagent_type: "release-notes-writer")
+```
+Prompt: "Read the context file at `<path>` for what was actually built, and `git diff` for the real change. Append one user-facing entry to the project's `RELEASENOTES.md` under `## Unreleased`, matching the file's existing format if it has one. Write for someone using the app, not for the team — no class names, no layer names. If the change has no user-visible effect, leave the file untouched. When done, append your results under a `## Release Notes` heading in the context file."
+
+This step never blocks. If the agent reports `'No user-facing change to record.'`, that is a normal outcome — record it and continue.
+
+### Step FB7: Final Report
+
+Same report format and rules as Step 9, with these differences:
 - Add a `**Mode:** fast` line
 - Minimum required spawns: 1x test-writer, 1x bug-fixer (fix), 1x tech-lead (combined review). The diagnosis row is listed as `inline (fast track)`, the qa-reviewer row as `skipped (fast track)`.
 - If the review recorded non-blocking minor findings or same-pattern sites, list them at the end of the report so the user can decide.
@@ -258,5 +279,6 @@ Same report format and rules as Step 8, with these differences:
 - Push-back loop capped at 2 iterations. Escalate on iteration 3.
 - Tech-lead + QA are NEVER optional (full workflow; in the fast track the combined review in Step FB4 is the never-optional equivalent).
 - Never commit — user reviews and commits manually.
+- Spawn the release-notes writer after the reviews pass, before the final report. It never blocks.
 - Never skip the final report.
 - If the bug fixer requires temporary diagnostic prints in prod code for evidence, they MUST remove them before finishing. Grep for their tag as a sanity check.

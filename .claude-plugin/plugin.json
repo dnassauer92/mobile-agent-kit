@@ -1,7 +1,7 @@
 {
   "name": "mobile-kit-test",
   "description": "TDD-style multi-agent orchestration kit for mobile projects (Android/KMM, Flutter): planner, test-writer, developer, tech-lead, QA, optimizer and design agents plus orchestrate/bug-hunt/review-loop/implement-plan/night-shift workflows and an add-agent workflow for extending the kit.",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "author": { "name": "ceichmueller" },
   "license": "MIT"
 }
