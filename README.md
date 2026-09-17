@@ -20,7 +20,7 @@ A [Claude Code plugin](https://code.claude.com/docs/en/plugins) providing a TDD-
 | `night-planner` | Turns end-of-day tickets into self-contained night orders; asks everything BEFORE the developer leaves |
 | `night-auditor` | Independently verifies the night's claims: re-runs tests, revert-checks, audits git vs. policy; flags, never fixes |
 
-**6 skills** (`skills/`):
+**7 skills** (`skills/`):
 
 | Command | Workflow |
 |---|---|
@@ -32,6 +32,7 @@ A [Claude Code plugin](https://code.claude.com/docs/en/plugins) providing a TDD-
 | `/mobile-kit:review-loop` | tech-lead + qa-reviewer + code-optimizer in parallel, fix, re-review until clean |
 | `/mobile-kit:implement-plan <plan-path>` | Phase-by-phase implementation with per-phase review |
 | `/mobile-kit:night-shift prep \| run \| audit` | Overnight autonomy: `prep` builds a night-ready ticket queue before end of day; `run` executes it overnight — never waits for a human, parks blocked tickets, ends with an independent audit — and delivers a verified morning report; `audit` runs that verification standalone |
+| `/mobile-kit:add-agent [description or path]` | Add a new agent to the kit: describe it or import an existing agent file, pick its spot in the pipeline, write it to the kit's conventions, and wire it into the workflows, `adopt`, the README and the version |
 
 Key rule across all workflows: **tests are written before implementation and are the contract.** Implementers may not modify tests; disagreements go through a capped push-back protocol (max 2 iterations, then escalate to the user).
 
