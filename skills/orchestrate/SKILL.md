@@ -168,7 +168,17 @@ to capture the screen or record explicitly in the final report that visual fidel
 Do not let the same measurable mock deviation be filed "for designer sign-off" across multiple
 rounds — that is a fix the agent is deferring.
 
-### Step 9: Final Report
+### Step 9: Release Notes
+
+Spawn the release-notes writer:
+```
+Agent(subagent_type: "release-notes-writer")
+```
+Prompt: "Read the context file at `<path>` for what was actually built, and `git diff` for the real change. Append one user-facing entry to the project's `RELEASENOTES.md` under `## Unreleased`, matching the file's existing format if it has one. Write for someone using the app, not for the team — no class names, no layer names. If the change has no user-visible effect, leave the file untouched. When done, append your results under a `## Release Notes` heading in the context file."
+
+This step never blocks. If the agent reports `'No user-facing change to record.'`, that is a normal outcome — record it and continue.
+
+### Step 10: Final Report
 
 After all steps complete, read the context file one final time and present this report to the user:
 
@@ -186,6 +196,7 @@ After all steps complete, read the context file one final time and present this 
 | 6 | tech-lead (tech-lead) | <id> | completed | <one line> |
 | 7 | qa-reviewer (qa-reviewer) | <id> | completed | <one line> |
 | ... | ... | ... | ... | ... |
+| N | release-notes (release-notes-writer) | <id> | completed | <one line — entry written, or no user-facing change> |
 
 **Tests written:** <count> — <all passing / <n> passing / <breakdown>>
 **Push-back iterations:** <0 | 1 | 2 | escalated>
@@ -238,9 +249,19 @@ If UI files with visible changes were touched, spawn the design guardian (Step 8
 
 If blocking issues were found: spawn the developer once to fix them (re-running only the affected tests), then re-spawn the combined reviewer once to verify the fixes. If blocking issues remain after this single round, STOP and report them to the user instead of looping — the user decides whether to keep fixing in fast mode or upgrade to the full workflow.
 
-### Step F6: Final Report
+### Step F6: Release Notes
 
-Same report format and rules as Step 9, with these differences:
+Spawn the release-notes writer:
+```
+Agent(subagent_type: "release-notes-writer")
+```
+Prompt: "Read the context file at `<path>` for what was actually built, and `git diff` for the real change. Append one user-facing entry to the project's `RELEASENOTES.md` under `## Unreleased`, matching the file's existing format if it has one. Write for someone using the app, not for the team — no class names, no layer names. If the change has no user-visible effect, leave the file untouched. When done, append your results under a `## Release Notes` heading in the context file."
+
+This step never blocks. If the agent reports `'No user-facing change to record.'`, that is a normal outcome — record it and continue.
+
+### Step F7: Final Report
+
+Same report format and rules as Step 10, with these differences:
 - Add a `**Mode:** fast` line
 - Minimum required spawns: 1x test-writer, 1x developer, 1x tech-lead (combined review). Planner and qa-reviewer rows are listed as `skipped (fast track)`.
 - If the review recorded non-blocking minor findings, list them at the end of the report so the user can decide whether to address them.
@@ -255,4 +276,5 @@ Same report format and rules as Step 9, with these differences:
 - Push-back loop is capped at 2 iterations. Escalate on iteration 3.
 - If any agent asks a question, relay it to the user and wait for the answer
 - Never commit code — the user will review and commit manually
+- Spawn the release-notes writer after the reviews pass, before the final report. It never blocks.
 - Never skip the final report
